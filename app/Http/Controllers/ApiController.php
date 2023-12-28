@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMailreset;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\SendMailreset;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Http\Requests\UpdatePasswordRequest;
 
 
 class ApiController extends Controller
@@ -98,7 +99,7 @@ class ApiController extends Controller
         Mail::to($email)->send(new SendMailreset($token, $email)); //token to send mail
     }
     public function createToken($email){ // function to get request mail
-        $oldToken = DB::table('password_resets')->where('email', $email)->first();
+        $oldToken = DB::table('password_reset_tokens')->where('email', $email)->first();
         if($oldToken){
             return $oldToken->token;
         }
@@ -108,7 +109,7 @@ class ApiController extends Controller
         return $token;
     }
     public function saveToken($token, $email){ // saves new password
-        DB::table('password_resets')->insert([
+        DB::table('password_reset_tokens')->insert([
             'email' => $email,
             'token' => $token,
             'created_at' => Carbon::now()
@@ -127,6 +128,8 @@ class ApiController extends Controller
             'data' => 'Reset email sent successfully, please check your inbox.'
         ], Response::HTTP_OK);
     }
+
+    
     public function logout(Request $request)
     {
         //valid credential

@@ -1,12 +1,13 @@
-<x-mail::message>
+@component('mail::message')
+    
 # Introduction
 
 The body of your message.
 
-<x-mail::button :url='http://localhost:3306/response-password-reset?token='.$token>
+@component('mail::button', ['url' => 'http://localhost:4200/response-password-reset?token='.$token])
 Button Text
-</x-mail::button>
+@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}
-</x-mail::message>
+@endcomponent
