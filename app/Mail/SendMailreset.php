@@ -36,12 +36,12 @@ class SendMailreset extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'Email.passwordReset',
-        );
-    }
+    // public function content(): Content
+    // {
+    //     return new Content(
+    //         markdown: 'Email.passwordReset',
+    //     );
+    // }
 
     public function build(){
         return $this->markdown('Email.passwordReset')->with([
